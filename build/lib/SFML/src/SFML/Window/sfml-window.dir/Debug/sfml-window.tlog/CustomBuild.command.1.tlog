@@ -1,0 +1,10 @@
+^C:\USERS\ADMIN\DOCUMENTS\LAURA-ROSE\ECE ING3\GIT\PONG\PONG\LIB\SFML\SRC\SFML\WINDOW\CMAKELISTS.TXT
+setlocal
+"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SC:/Users/Admin/Documents/Laura-Rose/ECE ING3/Git/Pong/Pong" "-BC:/Users/Admin/Documents/Laura-Rose/ECE ING3/Git/Pong/Pong/build" --check-stamp-file "C:/Users/Admin/Documents/Laura-Rose/ECE ING3/Git/Pong/Pong/build/lib/SFML/src/SFML/Window/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

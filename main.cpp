@@ -33,12 +33,17 @@ void init() {
     // Set size and origin of paddles
     for (sf::RectangleShape &p : paddles) {
         p.setSize(paddleSize);
-        p.setOrigin(paddleSize / 2.f);
+        p.setOrigin(paddleSize * 0.5f);
     }
-    // Set size and origin of ball
-        ball.setRadius(ballRadius);
-        ball.setOrigin(ballRadius,ballRadius); //Should be half the ball width and height
 
+    // Set size and origin of ball
+    ball.setRadius(ballRadius);
+    ball.setOrigin(ballRadius, ballRadius);
+
+    reset();
+}
+
+void reset() {
     // reset paddle position
     paddles[0].setPosition(paddleOffsetWall + paddleSize.x / 2.f, gameHeight / 2.f);
     paddles[1].setPosition(gameWidth - (paddleOffsetWall + paddleSize.x / 2.f), gameHeight / 2.f); //
@@ -49,22 +54,36 @@ void init() {
 
 }
 
-void update(float dt){
-    // handle paddle movement
-    float direction = 0.0f;
+void update(float dt) {
+    // handle paddle movement player 1
+    float direction_player1 = 0.0f;
+    
     if (sf::Keyboard::isKeyPressed(controls[0])) {
-        direction--;
+        direction_player1--;
     }
     if (sf::Keyboard::isKeyPressed(controls[1])) {
-        direction++;
+        direction_player1++;
     }
-    paddles[0].move(sf::Vector2f(0.f, direction * paddleSpeed * dt));
-    paddles[1].move(sf::Vector2f(0.f, direction * paddleSpeed * dt)); //
+    paddles[0].move(sf::Vector2f(0.f, direction_player1 * paddleSpeed * dt));
+
+    // handle paddle movement player 2
+    float direction_player2 = 0.0f;
+
+    if (sf::Keyboard::isKeyPressed(controls[0])) {
+        direction_player2--;
+    }
+    if (sf::Keyboard::isKeyPressed(controls[1])) {
+        direction_player2++;
+    }
+    paddles[1].move(sf::Vector2f(0.f, direction_player2 * paddleSpeed * dt));
+
+    // ball movement
     ball.move(ball_velocity * dt);
 
     // check ball collision
     const float bx = ball.getPosition().x;
     const float by = ball.getPosition().y;
+
     if (by > gameHeight) { //bottom wall
         // bottom wall
         ball_velocity.x *= velocity_multiplier;
@@ -76,11 +95,14 @@ void update(float dt){
         ball_velocity.y *= -velocity_multiplier;
         ball.move(sf::Vector2f(0.f, 10.f)); 
     } 
-    else if (bx > gameWidth) {
+    
+    if (bx > gameWidth) {
         // right wall
+        is_player_serving = false;
         reset();
     } else if (bx < 0) {
         // left wall
+        is_player_serving = true;
         reset();
     }
 
@@ -91,7 +113,7 @@ void update(float dt){
         by > paddles[0].getPosition().y - (paddleSize.y * 0.5) &&
         //ball is above bottom edge of paddle
         by < paddles[0].getPosition().y + (paddleSize.y * 0.5)){
-    {
+    
         // bounce off left paddle
     } else if (...) {
         // bounce off right paddle
